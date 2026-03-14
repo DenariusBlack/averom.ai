@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Averom — Supplier Risk Intelligence</title>
+<meta name="description" content="AI-powered supplier verification for Amazon sellers. Verify before you wire." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --brand: #0D9373;
+    --brand-light: #E1F5EE;
+    --brand-dim: #085041;
+    --danger: #E24B4A;
+    --danger-bg: #FCEBEB;
+    --warn: #BA7517;
+    --warn-bg: #FAEEDA;
+    --ok: #3B6D11;
+    --ok-bg: #EAF3DE;
+    --bg: #F8F7F4;
+    --surface: #FFFFFF;
+    --surface2: #F1EFE8;
+    --border: rgba(0,0,0,0.1);
+    --border2: rgba(0,0,0,0.18);
+    --text: #1A1A18;
+    --muted: #6B6B67;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Syne', sans-serif;
+    --radius: 10px;
+    --radius-lg: 14px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111110;
+      --surface: #1C1C1A;
+      --surface2: #242422;
+      --border: rgba(255,255,255,0.1);
+      --border2: rgba(255,255,255,0.18);
+      --text: #F0EFE8;
+      --muted: #8A8A84;
+      --brand-light: #04342C;
+      --danger-bg: #2A1010;
+      --warn-bg: #241800;
+      --ok-bg: #0E1F06;
+    }
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg);
+    border-bottom: 0.5px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+  .nav-logo { font-size: 18px; font-weight: 800; color: var(--brand); letter-spacing: -0.5px; }
+  .nav-logo span { color: var(--text); }
+  .nav-badge {
+    font-family: var(--mono); font-size: 10px; font-weight: 500;
+    background: var(--brand-light); color: var(--brand-dim);
+    padding: 3px 8px; border-radius: 20px; letter-spacing: 0.5px;
+  }
+
+  /* HERO */
+  .hero {
+    max-width: 720px; margin: 0 auto;
+    padding: 4rem 1.5rem 2rem;
+    text-align: center;
+  }
+  .hero-label {
+    font-family: var(--mono); font-size: 11px; color: var(--brand);
+    letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 5vw, 44px); font-weight: 800;
+    line-height: 1.15; letter-spacing: -1px; margin-bottom: 1rem;
+  }
+  .hero h1 em { color: var(--brand); font-style: normal; }
+  .hero p {
+    font-size: 15px; color: var(--muted); max-width: 480px;
+    margin: 0 auto 2rem; line-height: 1.7;
+  }
+
+  /* INPUT AREA */
+  .input-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border2);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    max-width: 620px; margin: 0 auto 1rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+  .input-row { display: flex; gap: 10px; }
+  .input-wrap {
+    flex: 1; position: relative;
+  }
+  .input-prefix {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    font-family: var(--mono); font-size: 12px; color: var(--muted);
+    pointer-events: none;
+  }
+  .domain-input {
+    width: 100%;
+    padding: 12px 14px 12px 52px;
+    border: 0.5px solid var(--border2);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono); font-size: 14px;
+    transition: border-color 0.15s;
+    appearance: none;
+  }
+  .domain-input:focus { outline: none; border-color: var(--brand); }
+  .domain-input::placeholder { color: var(--muted); }
+
+  .btn-analyze {
+    padding: 12px 22px;
+    background: var(--brand); color: #fff;
+    border: none; border-radius: var(--radius);
+    font-family: var(--sans); font-weight: 700; font-size: 14px;
+    cursor: pointer; white-space: nowrap;
+    transition: opacity 0.15s, transform 0.1s;
+    letter-spacing: -0.2px;
+  }
+  .btn-analyze:hover { opacity: 0.88; }
+  .btn-analyze:active { transform: scale(0.98); }
+  .btn-analyze:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .input-hint {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    text-align: center; margin-top: 8px;
+  }
+
+  /* STATUS */
+  .status-bar {
+    max-width: 620px; margin: 0 auto 1.5rem;
+    font-family: var(--mono); font-size: 12px; color: var(--brand);
+    padding: 10px 14px;
+    background: var(--brand-light);
+    border-radius: var(--radius);
+    display: none; align-items: center; gap: 10px;
+  }
+  .status-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--brand); flex-shrink: 0;
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .error-bar {
+    max-width: 620px; margin: 0 auto 1rem;
+    font-family: var(--mono); font-size: 12px; color: var(--danger);
+    padding: 10px 14px;
+    background: var(--danger-bg);
+    border-radius: var(--radius);
+    border-left: 2px solid var(--danger);
+    display: none;
+  }
+
+  /* REPORT */
+  .report {
+    max-width: 720px; margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+    display: none;
+  }
+
+  .section {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.375rem;
+    margin-bottom: 1rem;
+  }
+  .section-label {
+    font-family: var(--mono); font-size: 10px; font-weight: 500;
+    color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  /* REPORT HEADER */
+  .report-meta {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .report-company { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
+  .report-domain { font-family: var(--mono); font-size: 13px; color: var(--brand); margin-top: 3px; }
+
+  /* SCORE */
+  .score-layout { display: flex; align-items: center; gap: 1.25rem; }
+  .score-ring {
+    width: 78px; height: 78px; border-radius: 50%;
+    border: 2.5px solid; flex-shrink: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .score-num { font-family: var(--mono); font-size: 28px; font-weight: 500; line-height: 1; }
+  .score-unit { font-family: var(--mono); font-size: 9px; margin-top: 1px; opacity: 0.7; }
+  .verdict-label { font-size: 14px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 5px; }
+  .verdict-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  .c-low { border-color: var(--ok); color: var(--ok); }
+  .c-med { border-color: var(--warn); color: var(--warn); }
+  .c-high { border-color: var(--danger); color: var(--danger); }
+
+  /* KV GRID */
+  .kv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+  .kv-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 3px; }
+  .kv-value { font-size: 13px; font-weight: 500; }
+
+  /* BARS */
+  .bar-list { display: flex; flex-direction: column; gap: 14px; }
+  .bar-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .bar-name { font-size: 13px; font-weight: 500; }
+  .bar-score { font-family: var(--mono); font-size: 12px; font-weight: 500; }
+  .bar-track { height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden; margin-bottom: 5px; }
+  .bar-fill { height: 100%; border-radius: 2px; transition: width 0.7s cubic-bezier(0.4,0,0.2,1); }
+  .bar-note { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+  /* FLAGS */
+  .flag-list { display: flex; flex-direction: column; gap: 8px; }
+  .flag-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 10px 12px;
+    background: var(--danger-bg);
+    border-radius: var(--radius);
+    border-left: 2px solid var(--danger);
+  }
+  .flag-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--danger); margin-top: 6px; flex-shrink: 0; }
+  .flag-text { font-size: 13px; line-height: 1.55; }
+
+  /* STEPS */
+  .step-list { display: flex; flex-direction: column; gap: 8px; }
+  .step-item { display: flex; gap: 12px; align-items: flex-start; padding: 10px 12px; background: var(--surface2); border-radius: var(--radius); }
+  .step-n {
+    width: 22px; height: 22px; border-radius: 50%; background: var(--brand); color: #fff;
+    font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .step-text { font-size: 13px; line-height: 1.6; }
+
+  /* CONCLUSION */
+  .conclusion-text { font-size: 14px; line-height: 1.75; }
+
+  /* FOOTER NOTE */
+  .report-footer {
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    padding-top: 1rem; margin-top: 0.5rem;
+    border-top: 0.5px solid var(--border);
+    line-height: 1.7;
+  }
+
+  /* PAGE FOOTER */
+  footer {
+    border-top: 0.5px solid var(--border);
+    padding: 1.5rem 2rem;
+    font-family: var(--mono); font-size: 11px; color: var(--muted);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 8px;
+  }
+
+  @media (max-width: 520px) {
+    .input-row { flex-direction: column; }
+    .score-layout { flex-direction: column; text-align: center; }
+    .kv-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">AVER<span>OM</span></div>
+  <div class="nav-badge">SUPPLIER INTELLIGENCE</div>
+</nav>
+
+<main>
+  <div class="hero">
+    <div class="hero-label">// verify before you wire</div>
+    <h1>Know your supplier's risk <em>before</em> you send payment</h1>
+    <p>AI-powered risk intelligence for Amazon sellers. Enter any supplier domain and get a full due diligence report in seconds.</p>
+  </div>
+
+  <div class="input-card">
+    <div class="input-row">
+      <div class="input-wrap">
+        <span class="input-prefix">https://</span>
+        <input
+          class="domain-input"
+          id="supplierInput"
+          type="text"
+          placeholder="supplynextwholesale.com"
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+      <button class="btn-analyze" id="analyzeBtn">Analyze →</button>
+    </div>
+  </div>
+  <div class="input-hint">Enter a supplier domain · press Enter or click Analyze</div>
+
+  <div class="status-bar" id="statusBar">
+    <div class="status-dot"></div>
+    <span id="statusText">Initializing scan...</span>
+  </div>
+  <div class="error-bar" id="errorBar"></div>
+
+  <div class="report" id="report">
+
+    <div class="section">
+      <div class="report-meta" id="reportMeta"></div>
+      <div class="report-company" id="reportCompany"></div>
+      <div class="report-domain" id="reportDomain"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Overall Risk Score</div>
+      <div class="score-layout">
+        <div class="score-ring" id="scoreRing">
+          <div class="score-num" id="scoreNum">—</div>
+          <div class="score-unit">/ 10</div>
+        </div>
+        <div>
+          <div class="verdict-label" id="verdictLabel"></div>
+          <div class="verdict-desc" id="verdictDesc"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Supplier Overview</div>
+      <div class="kv-grid" id="overviewGrid"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Risk Indicator Breakdown</div>
+      <div class="bar-list" id="barList"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Key Red Flags</div>
+      <div class="flag-list" id="flagList"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Recommended Due Diligence</div>
+      <div class="step-list" id="stepList"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Final Conclusion</div>
+      <div class="conclusion-text" id="conclusionText"></div>
+      <div class="report-footer" id="reportFooter"></div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <span>© 2025 Averom · Denarius Black LLC</span>
+  <span>AI-assisted intelligence · Not legal or financial advice</span>
+</footer>
+
+<script>
+  const STATUS_MSGS = [
+    'Scanning domain registration records...',
+    'Checking fraud databases and complaint boards...',
+    'Searching BBB filings and business registry...',
+    'Analyzing Amazon compliance signals...',
+    'Cross-referencing review patterns...',
+    'Verifying physical presence and ownership...',
+    'Calculating weighted risk score...',
+    'Generating intelligence report...'
+  ];
+
+  let statusTimer;
+
+  function startStatus() {
+    let i = 0;
+    const el = document.getElementById('statusText');
+    const bar = document.getElementById('statusBar');
+    bar.style.display = 'flex';
+    el.textContent = STATUS_MSGS[0];
+    statusTimer = setInterval(() => {
+      i = (i + 1) % STATUS_MSGS.length;
+      el.textContent = STATUS_MSGS[i];
+    }, 2200);
+  }
+
+  function stopStatus() {
+    clearInterval(statusTimer);
+    document.getElementById('statusBar').style.display = 'none';
+  }
+
+  function scoreClass(s) {
+    if (s <= 3.5) return 'c-low';
+    if (s <= 6.5) return 'c-med';
+    return 'c-high';
+  }
+
+  function barColor(s) {
+    if (s <= 3) return '#3B6D11';
+    if (s <= 6) return '#BA7517';
+    return '#E24B4A';
+  }
+
+  function render(data) {
+    const ts = new Date();
+    const id = `AVR-${ts.getFullYear()}${String(ts.getMonth()+1).padStart(2,'0')}${String(ts.getDate()).padStart(2,'0')}-${Math.floor(Math.random()*9000+1000)}`;
+    document.getElementById('reportMeta').textContent = `${id} · ${ts.toLocaleString()}`;
+    document.getElementById('reportCompany').textContent = data.company_name;
+    document.getElementById('reportDomain').textContent = data.website;
+
+    const ring = document.getElementById('scoreRing');
+    ring.className = 'score-ring ' + scoreClass(data.overall_score);
+    document.getElementById('scoreNum').textContent = Number(data.overall_score).toFixed(1);
+    document.getElementById('verdictLabel').textContent = data.verdict;
+    document.getElementById('verdictDesc').textContent = data.verdict_summary;
+
+    document.getElementById('overviewGrid').innerHTML = [
+      ['Company', data.company_name],
+      ['Website', data.website],
+      ['Address', data.address],
+      ['Domain Age', data.domain_age],
+      ['Category', data.business_category]
+    ].map(([l,v]) =>
+      `<div><div class="kv-label">${l}</div><div class="kv-value">${v || '—'}</div></div>`
+    ).join('');
+
+    document.getElementById('barList').innerHTML = (data.categories || []).map(c => {
+      const pct = Math.round((c.score / 10) * 100);
+      const col = barColor(c.score);
+      return `<div>
+        <div class="bar-header">
+          <span class="bar-name">${c.name}</span>
+          <span class="bar-score" style="color:${col}">${Number(c.score).toFixed(1)} / 10</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${col}"></div></div>
+        <div class="bar-note">${c.explanation}</div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('flagList').innerHTML = (data.red_flags || []).length
+      ? data.red_flags.map(f =>
+          `<div class="flag-item"><div class="flag-dot"></div><div class="flag-text">${f}</div></div>`
+        ).join('')
+      : '<div style="font-size:13px;color:var(--muted)">No major red flags identified at this time.</div>';
+
+    document.getElementById('stepList').innerHTML = (data.due_diligence_steps || []).map((s,i) =>
+      `<div class="step-item"><div class="step-n">${i+1}</div><div class="step-text">${s}</div></div>`
+    ).join('');
+
+    document.getElementById('conclusionText').textContent = data.conclusion;
+    document.getElementById('reportFooter').textContent =
+      `Data note: ${data.data_sources_note || 'Report generated via AI-assisted web intelligence.'} · This report is for due diligence purposes only and does not constitute legal or financial advice.`;
+
+    document.getElementById('report').style.display = 'block';
+    document.getElementById('report').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  async function runAnalysis() {
+    const raw = document.getElementById('supplierInput').value.trim();
+    if (!raw) return;
+    const supplier = raw.replace(/^https?:\/\//i, '').replace(/\/.*$/, '');
+
+    const btn = document.getElementById('analyzeBtn');
+    const errEl = document.getElementById('errorBar');
+    btn.disabled = true;
+    errEl.style.display = 'none';
+    document.getElementById('report').style.display = 'none';
+    startStatus();
+
+    try {
+      const res = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ supplier })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error || 'Analysis failed');
+
+      stopStatus();
+      render(data);
+    } catch (err) {
+      stopStatus();
+      errEl.textContent = 'Error: ' + err.message;
+      errEl.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  document.getElementById('analyzeBtn').addEventListener('click', runAnalysis);
+  document.getElementById('supplierInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') runAnalysis();
+  });
+</script>
+</body>
+</html>

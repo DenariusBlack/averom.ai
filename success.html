@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Averom — You're on the list</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #080F1A;
+    --gold: #C9A84C;
+    --gold-glow: rgba(201,168,76,0.18);
+    --white: #F0EDE8;
+    --muted: rgba(240,237,232,0.45);
+    --border: rgba(201,168,76,0.2);
+  }
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.65rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+    opacity: 0.6;
+  }
+  .check {
+    font-size: 2rem;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  h1 em { font-style: italic; color: var(--gold); }
+  p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 400px;
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+  }
+  a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 0.7rem 1.5rem;
+    transition: border-color 0.3s;
+  }
+  a:hover { border-color: var(--gold); }
+</style>
+</head>
+<body>
+  <div class="logo">Averom</div>
+  <div class="check">✓</div>
+  <h1>You're on the <em>list.</em></h1>
+  <p>We'll be in touch when early access opens. Keep an eye on your inbox.</p>
+  <a href="/">Back to home</a>
+</body>
+</html>
