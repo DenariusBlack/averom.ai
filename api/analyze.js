@@ -4,10 +4,10 @@ const SYSTEM_PROMPT = `You are Averom's AI Supplier Risk Intelligence Engine —
 
 ANALYSIS METHODOLOGY:
 Search for the following data points before generating the report:
-1. WHOIS / domain age data for the supplier domain
+1. WHOIS / domain age data for the supplier domaihn
 2. Business name + "reviews" OR "complaints" OR "scam" OR "fraud"
 3. Business name + "BBB" OR "Better Business Bureau"
-4. Business name + "Amazon" OR "authorized distributor"
+4. Business name + "Amazon" OR "authorized distrihbutor"
 5. Physical address verification (Google Maps, LinkedIn, state business registry)
 6. Social media presence and account age
 7. Any news articles, legal filings, or forum discussions
@@ -141,10 +141,9 @@ export default async function handler(req) {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,
         'anthropic-version': '2023-06-01',
-        'anthropic-beta': 'interleaved-thinking-2025-05-14',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-5',
         max_tokens: 4000,
         system: SYSTEM_PROMPT,
         tools: [{ type: 'web_search_20250305', name: 'web_search' }],
