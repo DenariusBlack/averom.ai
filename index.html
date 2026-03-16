@@ -36,16 +36,16 @@
     background: rgba(12,16,24,0.92); border-bottom: 1px solid var(--border);
     backdrop-filter: blur(10px);
   }
-  .nav-logo { font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; }
-  .nav-sub { font-family: var(--sans); font-size: 8px; font-weight: 300; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-top: 2px; }
-  .nav-tag { font-family: var(--sans); font-size: 8px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); border: 1px solid var(--gold-dim); padding: 4px 10px; }
+  .nav-logo { font-family: var(--sans); font-size: 14px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; }
+  .nav-sub { font-family: var(--sans); font-size: 10px; font-weight: 300; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-top: 2px; }
+  .nav-tag { font-family: var(--sans); font-size: 10px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); border: 1px solid var(--gold-dim); padding: 4px 10px; }
   .hero {
     min-height: 100vh; display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     text-align: center; padding: 8rem 1.5rem 3rem; position: relative; z-index: 1;
   }
   .hero-eyebrow {
-    font-family: var(--sans); font-size: 8px; font-weight: 400; letter-spacing: 4px;
+    font-family: var(--sans); font-size: 11px; font-weight: 400; letter-spacing: 4px;
     text-transform: uppercase; color: var(--gold); margin-bottom: 2rem;
     display: flex; align-items: center; gap: 16px;
   }
@@ -56,11 +56,11 @@
   }
   .hero h1 em { color: var(--gold); font-style: italic; }
   .hero-sub {
-    font-family: var(--sans); font-size: 10px; font-weight: 300;
+    font-family: var(--sans); font-size: 12px; font-weight: 300;
     letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 2.5rem;
   }
   .hero-desc {
-    font-family: var(--sans); font-size: 12px; font-weight: 300;
+    font-family: var(--sans); font-size: 14px; font-weight: 300;
     color: var(--muted); max-width: 440px; line-height: 1.9; margin-bottom: 3rem; letter-spacing: 0.3px;
   }
   .input-card {
@@ -68,28 +68,26 @@
     border: 1px solid var(--border2); background: rgba(12,16,24,0.7);
     padding: 1.5rem 1.75rem;
   }
-  .input-label { font-family: var(--sans); font-size: 8px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+  .input-label { font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
   .input-row { display: flex; gap: 10px; align-items: center; }
   .input-prefix { font-family: var(--sans); font-size: 10px; font-weight: 300; color: var(--muted); flex-shrink: 0; }
   .domain-input {
     flex: 1; background: transparent; border: none; border-bottom: 1px solid var(--border2);
-    color: var(--text); font-family: var(--sans); font-size: 13px; font-weight: 300;
+    color: var(--text); font-family: var(--sans); font-size: 15px; font-weight: 300;
     padding: 8px 6px; outline: none; letter-spacing: 0.5px; transition: border-color 0.2s;
   }
   .domain-input:focus { border-bottom-color: var(--gold); }
   .domain-input::placeholder { color: rgba(232,228,216,0.18); }
   .btn-analyze {
-    background: var(--gold); color: var(--navy);
-    border: none; padding: 9px 20px;
-    font-family: var(--sans); font-size: 9px; font-weight: 600;
-    letter-spacing: 2.5px; text-transform: uppercase; cursor: pointer; flex-shrink: 0;
-    transition: opacity 0.2s;
+    background: var(--gold); color: var(--navy); border: none; padding: 9px 20px;
+    font-family: var(--sans); font-size: 11px; font-weight: 600;
+    letter-spacing: 2.5px; text-transform: uppercase; cursor: pointer; flex-shrink: 0; transition: opacity 0.2s;
   }
   .btn-analyze:hover { opacity: 0.85; }
   .btn-analyze:disabled { opacity: 0.3; cursor: not-allowed; }
   .status-bar {
     width: 100%; max-width: 560px; margin-top: 1rem;
-    font-family: var(--sans); font-size: 9px; font-weight: 300; letter-spacing: 2px;
+    font-family: var(--sans); font-size: 11px; font-weight: 300; letter-spacing: 2px;
     text-transform: uppercase; color: var(--gold); padding: 10px 14px;
     border: 1px solid var(--gold-dim); background: var(--gold-glow);
     display: none; align-items: center; gap: 10px;
@@ -104,14 +102,14 @@
   }
   .features { position: relative; z-index: 1; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
   .features-label {
-    font-family: var(--sans); font-size: 8px; font-weight: 400; letter-spacing: 4px;
+    font-family: var(--sans); font-size: 11px; font-weight: 400; letter-spacing: 4px;
     text-transform: uppercase; color: var(--muted); text-align: center;
     padding: 12px; border-bottom: 1px solid var(--border);
   }
   .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
   .feat-tag {
     padding: 14px 20px; text-align: center;
-    font-family: var(--sans); font-size: 8px; font-weight: 500;
+    font-family: var(--sans); font-size: 11px; font-weight: 500;
     letter-spacing: 2px; text-transform: uppercase; color: var(--text);
     border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
     display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -123,23 +121,23 @@
   .stat { flex: 1; padding: 1.5rem; text-align: center; border-right: 1px solid var(--border); }
   .stat:last-child { border-right: none; }
   .stat-num { font-family: var(--serif); font-size: 36px; font-weight: 300; color: var(--gold); line-height: 1; }
-  .stat-label { font-family: var(--sans); font-size: 8px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+  .stat-label { font-family: var(--sans); font-size: 11px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
   .report { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 3rem 1.5rem 6rem; display: none; }
   .report-divider {
     display: flex; align-items: center; gap: 16px; margin-bottom: 2rem;
-    font-family: var(--sans); font-size: 8px; font-weight: 500; letter-spacing: 4px;
+    font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 4px;
     text-transform: uppercase; color: var(--gold);
   }
   .report-divider::before, .report-divider::after { content: ''; flex: 1; height: 1px; background: var(--border2); }
   .panel { border: 1px solid var(--border); background: rgba(12,16,24,0.6); margin-bottom: 2px; }
   .panel-header {
     padding: 10px 1.5rem; border-bottom: 1px solid var(--border);
-    font-family: var(--sans); font-size: 8px; font-weight: 500;
+    font-family: var(--sans); font-size: 11px; font-weight: 500;
     letter-spacing: 3px; text-transform: uppercase; color: var(--gold);
   }
   .panel-body { padding: 1.5rem; }
   .panel-group { margin-bottom: 1.5rem; }
-  .report-meta { font-family: var(--sans); font-size: 9px; font-weight: 300; letter-spacing: 1px; color: var(--muted); margin-bottom: 8px; }
+  .report-meta { font-family: var(--sans); font-size: 12px; font-weight: 300; letter-spacing: 1px; color: var(--muted); margin-bottom: 8px; }
   .report-company { font-family: var(--serif); font-size: 30px; font-weight: 300; margin-bottom: 4px; }
   .report-domain { font-family: var(--sans); font-size: 10px; font-weight: 300; color: var(--gold); letter-spacing: 2px; }
   .score-layout { display: flex; align-items: center; gap: 1.5rem; }
@@ -149,30 +147,62 @@
   .c-low { border-color: var(--ok); color: var(--ok); }
   .c-med { border-color: var(--warn); color: var(--warn); }
   .c-high { border-color: var(--danger); color: var(--danger); }
-  .verdict-label { font-family: var(--sans); font-size: 10px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 7px; }
-  .verdict-desc { font-family: var(--sans); font-size: 11px; font-weight: 300; color: var(--muted); line-height: 1.75; }
+  .verdict-label { font-family: var(--sans); font-size: 12px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 7px; }
+  .verdict-desc { font-family: var(--sans); font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.75; }
   .kv-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.25rem; }
-  .kv-label { font-family: var(--sans); font-size: 8px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
-  .kv-value { font-family: var(--serif); font-size: 16px; font-weight: 300; line-height: 1.45; }
+  .kv-label { font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
+  .kv-value { font-family: var(--serif); font-size: 18px; font-weight: 300; line-height: 1.45; }
   .bar-list { display: flex; flex-direction: column; gap: 1.25rem; }
   .bar-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
-  .bar-name { font-family: var(--sans); font-size: 9px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; }
+  .bar-name { font-family: var(--sans); font-size: 12px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; }
   .bar-score { font-family: var(--serif); font-size: 15px; font-weight: 300; }
   .bar-track { height: 1px; background: rgba(255,255,255,0.07); margin-bottom: 6px; }
   .bar-fill { height: 100%; transition: width 0.8s ease; }
-  .bar-note { font-family: var(--sans); font-size: 10px; font-weight: 300; color: var(--muted); line-height: 1.7; }
+  .bar-note { font-family: var(--sans); font-size: 12px; font-weight: 300; color: var(--muted); line-height: 1.7; }
   .flag-list { display: flex; flex-direction: column; gap: 8px; }
   .flag-item { display: flex; gap: 12px; align-items: flex-start; padding: 10px 14px; border: 1px solid rgba(192,102,90,0.2); background: rgba(192,102,90,0.04); }
   .flag-sq { width: 5px; height: 5px; background: var(--danger); flex-shrink: 0; margin-top: 5px; }
-  .flag-text { font-family: var(--sans); font-size: 11px; font-weight: 300; line-height: 1.65; }
+  .flag-text { font-family: var(--sans); font-size: 13px; font-weight: 300; line-height: 1.65; }
   .step-list { display: flex; flex-direction: column; gap: 8px; }
   .step-item { display: flex; gap: 14px; align-items: flex-start; padding: 10px 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); }
   .step-n { font-family: var(--serif); font-size: 18px; font-weight: 300; color: var(--gold); flex-shrink: 0; line-height: 1; margin-top: 1px; min-width: 20px; }
-  .step-text { font-family: var(--sans); font-size: 11px; font-weight: 300; line-height: 1.7; }
+  .step-text { font-family: var(--sans); font-size: 13px; font-weight: 300; line-height: 1.7; }
   .conclusion-text { font-family: var(--serif); font-size: 18px; font-weight: 300; line-height: 1.85; font-style: italic; }
-  .report-footnote { font-family: var(--sans); font-size: 9px; font-weight: 300; letter-spacing: 0.5px; color: var(--muted); line-height: 1.7; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+  .report-footnote { font-family: var(--sans); font-size: 11px; font-weight: 300; letter-spacing: 0.5px; color: var(--muted); line-height: 1.7; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+  .report-locked { position: relative; }
+  .report-blur { filter: blur(6px); pointer-events: none; user-select: none; }
+  .report-gate {
+    position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: center;
+    padding-top: 80px; z-index: 10;
+    background: linear-gradient(to bottom, transparent 0%, rgba(12,16,24,0.9) 25%);
+  }
+  .gate-card {
+    width: 100%; max-width: 460px; border: 1px solid var(--border2);
+    background: rgba(12,16,24,0.98); padding: 2.5rem 2rem; text-align: center; margin: 0 1rem;
+  }
+  .gate-eyebrow { font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 12px; justify-content: center; }
+  .gate-eyebrow::before, .gate-eyebrow::after { content: ''; display: block; width: 24px; height: 1px; background: var(--gold-dim); }
+  .gate-title { font-family: var(--serif); font-size: 26px; font-weight: 300; line-height: 1.3; margin-bottom: 0.75rem; }
+  .gate-desc { font-family: var(--sans); font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.8; margin-bottom: 1.75rem; }
+  .gate-field { margin-bottom: 12px; }
+  .gate-input {
+    width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--border2);
+    color: var(--text); font-family: var(--sans); font-size: 15px; font-weight: 300;
+    padding: 10px 6px; outline: none; letter-spacing: 0.5px; transition: border-color 0.2s;
+  }
+  .gate-input:focus { border-bottom-color: var(--gold); }
+  .gate-input::placeholder { color: rgba(232,228,216,0.2); }
+  .btn-unlock {
+    width: 100%; background: var(--gold); color: var(--navy); border: none; padding: 12px;
+    font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: 2.5px;
+    text-transform: uppercase; cursor: pointer; margin-top: 8px; transition: opacity 0.2s;
+  }
+  .btn-unlock:hover { opacity: 0.85; }
+  .btn-unlock:disabled { opacity: 0.3; cursor: not-allowed; }
+  .gate-success { display: none; padding: 1rem 0; }
+  .gate-success-text { font-family: var(--serif); font-size: 20px; font-weight: 300; color: var(--gold); }
   footer { position: relative; z-index: 1; border-top: 1px solid var(--border); padding: 1.5rem 2.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-  footer span { font-family: var(--sans); font-size: 9px; font-weight: 300; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+  footer span { font-family: var(--sans); font-size: 11px; font-weight: 300; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
   @media (max-width: 560px) {
     .input-row { flex-wrap: wrap; }
     .btn-analyze { width: 100%; text-align: center; }
@@ -184,7 +214,6 @@
 </style>
 </head>
 <body>
-
 <nav>
   <div>
     <div class="nav-logo">Averom</div>
@@ -192,13 +221,11 @@
   </div>
   <div class="nav-tag">Early Access</div>
 </nav>
-
 <div class="hero">
   <div class="hero-eyebrow">AI-Powered Due Diligence</div>
   <h1>Know your supplier<br /><em>before</em> they cost you.</h1>
   <div class="hero-sub">Verify Before You Wire</div>
   <p class="hero-desc">Averom analyzes suppliers in seconds — flagging fraud signals, legitimacy gaps, and compliance risks before you commit capital or inventory.</p>
-
   <div class="input-card">
     <div class="input-label">Enter Supplier Domain</div>
     <div class="input-row">
@@ -210,7 +237,6 @@
   <div class="status-bar" id="statusBar"><div class="status-dot"></div><span id="statusText">Initializing intelligence scan</span></div>
   <div class="error-bar" id="errorBar"></div>
 </div>
-
 <div class="features">
   <div class="features-label">Built for Ecommerce · B2B · Import &amp; Export</div>
   <div class="features-grid">
@@ -222,58 +248,74 @@
     <div class="feat-tag"><div class="feat-dot"></div>Instant AI Reports</div>
   </div>
 </div>
-
 <div class="stats">
   <div class="stat"><div class="stat-num">7s</div><div class="stat-label">Avg. Report Time</div></div>
   <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Risk Signals Checked</div></div>
   <div class="stat"><div class="stat-num">$0</div><div class="stat-label">Early Access Cost</div></div>
 </div>
-
 <div class="report" id="report">
   <div class="report-divider">Intelligence Report</div>
-  <div class="panel-group">
-    <div class="panel">
-      <div class="panel-header">Report Header</div>
-      <div class="panel-body"><div class="report-meta" id="reportMeta"></div><div class="report-company" id="reportCompany"></div><div class="report-domain" id="reportDomain"></div></div>
+  <div class="report-locked" id="reportLocked">
+    <div class="report-blur" id="reportContent">
+      <div class="panel-group">
+        <div class="panel">
+          <div class="panel-header">Report Header</div>
+          <div class="panel-body"><div class="report-meta" id="reportMeta"></div><div class="report-company" id="reportCompany"></div><div class="report-domain" id="reportDomain"></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">Overall Risk Score</div>
+          <div class="panel-body"><div class="score-layout"><div class="score-box" id="scoreBox"><div class="score-num" id="scoreNum">—</div><div class="score-unit">/ 10</div></div><div><div class="verdict-label" id="verdictLabel"></div><div class="verdict-desc" id="verdictDesc"></div></div></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">Supplier Overview</div>
+          <div class="panel-body"><div class="kv-grid" id="overviewGrid"></div></div>
+        </div>
+      </div>
+      <div class="panel-group">
+        <div class="panel">
+          <div class="panel-header">Risk Indicator Breakdown</div>
+          <div class="panel-body"><div class="bar-list" id="barList"></div></div>
+        </div>
+      </div>
+      <div class="panel-group">
+        <div class="panel">
+          <div class="panel-header">Key Red Flags</div>
+          <div class="panel-body"><div class="flag-list" id="flagList"></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">Recommended Due Diligence</div>
+          <div class="panel-body"><div class="step-list" id="stepList"></div></div>
+        </div>
+      </div>
+      <div class="panel-group">
+        <div class="panel">
+          <div class="panel-header">Final Conclusion</div>
+          <div class="panel-body"><div class="conclusion-text" id="conclusionText"></div><div class="report-footnote" id="reportFootnote"></div></div>
+        </div>
+      </div>
     </div>
-    <div class="panel">
-      <div class="panel-header">Overall Risk Score</div>
-      <div class="panel-body"><div class="score-layout"><div class="score-box" id="scoreBox"><div class="score-num" id="scoreNum">—</div><div class="score-unit">/ 10</div></div><div><div class="verdict-label" id="verdictLabel"></div><div class="verdict-desc" id="verdictDesc"></div></div></div></div>
-    </div>
-    <div class="panel">
-      <div class="panel-header">Supplier Overview</div>
-      <div class="panel-body"><div class="kv-grid" id="overviewGrid"></div></div>
-    </div>
-  </div>
-  <div class="panel-group">
-    <div class="panel">
-      <div class="panel-header">Risk Indicator Breakdown</div>
-      <div class="panel-body"><div class="bar-list" id="barList"></div></div>
-    </div>
-  </div>
-  <div class="panel-group">
-    <div class="panel">
-      <div class="panel-header">Key Red Flags</div>
-      <div class="panel-body"><div class="flag-list" id="flagList"></div></div>
-    </div>
-    <div class="panel">
-      <div class="panel-header">Recommended Due Diligence</div>
-      <div class="panel-body"><div class="step-list" id="stepList"></div></div>
-    </div>
-  </div>
-  <div class="panel-group">
-    <div class="panel">
-      <div class="panel-header">Final Conclusion</div>
-      <div class="panel-body"><div class="conclusion-text" id="conclusionText"></div><div class="report-footnote" id="reportFootnote"></div></div>
+    <div class="report-gate" id="reportGate">
+      <div class="gate-card">
+        <div class="gate-eyebrow">Your Report Is Ready</div>
+        <h2 class="gate-title">Unlock your intelligence report</h2>
+        <p class="gate-desc">Enter your details to access the full supplier risk analysis.</p>
+        <div id="gateForm">
+          <div class="gate-field"><input class="gate-input" id="gateName" type="text" placeholder="Full Name" /></div>
+          <div class="gate-field"><input class="gate-input" id="gatePhone" type="tel" placeholder="Phone Number" /></div>
+          <div class="gate-field"><input class="gate-input" id="gateEmail" type="email" placeholder="Email Address" /></div>
+          <button class="btn-unlock" id="unlockBtn">Access Report</button>
+        </div>
+        <div class="gate-success" id="gateSuccess">
+          <div class="gate-success-text">Report unlocked.</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
 <footer>
-  <span>© 2025 Averom · Denarius Black LLC</span>
+  <span>© 2025 Averom</span>
   <span>AI Intelligence · Not Legal Advice</span>
 </footer>
-
 <script>
 const STATUS=['Scanning domain registration records','Checking fraud databases','Searching BBB and business registry','Analyzing Amazon compliance signals','Cross-referencing review patterns','Verifying physical presence','Calculating weighted risk score','Generating intelligence report'];
 let statusTimer;
@@ -310,11 +352,7 @@ async function runAnalysis(){
   btn.disabled=true;errEl.style.display='none';document.getElementById('report').style.display='none';
   startStatus();
   try{
-    const res=await fetch('/api/analyze',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({supplier})
-    });
+    const res=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({supplier})});
     const d=await res.json();
     if(!res.ok)throw new Error(d.error?.message||'API error');
     const text=(d.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('').replace(/```json|```/g,'').trim();
@@ -326,6 +364,23 @@ async function runAnalysis(){
 }
 document.getElementById('analyzeBtn').addEventListener('click',runAnalysis);
 document.getElementById('supplierInput').addEventListener('keydown',e=>{if(e.key==='Enter')runAnalysis();});
+document.getElementById('unlockBtn').addEventListener('click',async()=>{
+  const name=document.getElementById('gateName').value.trim();
+  const phone=document.getElementById('gatePhone').value.trim();
+  const email=document.getElementById('gateEmail').value.trim();
+  if(!name||!email)return;
+  const btn=document.getElementById('unlockBtn');
+  btn.disabled=true;btn.textContent='Submitting...';
+  try{await fetch('https://formspree.io/f/mjgaakzd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone,email})});}catch(e){}
+  document.getElementById('gateForm').style.display='none';
+  document.getElementById('gateSuccess').style.display='block';
+  setTimeout(()=>{
+    document.getElementById('reportGate').style.display='none';
+    document.getElementById('reportContent').classList.remove('report-blur');
+    document.getElementById('reportContent').style.pointerEvents='auto';
+    document.getElementById('reportContent').style.userSelect='auto';
+  },1000);
+});
 </script>
 </body>
 </html>
