@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: true, message: 'Missing supplier domain' });
   }
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const aiRes = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -20,33 +20,34 @@ export default async function handler(req, res) {
         messages: [{ role: 'user', content: 'Analyze supplier domain "' + supplier + '". Return ONLY valid JSON no markdown: {"company_name":"","website":"' + supplier + '","address":"","domain_age":"","business_category":"","overall_score":5.0,"verdict":"MODERATE RISK","verdict_summary":"","categories":[{"name":"Domain Age Risk","score":5,"explanation":""},{"name":"Fraud Scanner Risk","score":5,"explanation":""},{"name":"Amazon Compliance Risk","score":5,"explanation":""},{"name":"Review Quality Risk","score":5,"explanation":""},{"name":"Transparency Risk","score":5,"explanation":""},{"name":"Brand Authorization Risk","score":5,"explanation":""},{"name":"Physical Presence Risk","score":5,"explanation":""}],"red_flags":[],"due_diligence_steps":[],"conclusion":"","data_sources_note":""}' }]
       })
     });
-    const data = await response.json();
-    if (!response.ok) return res.status(response.status).json({ error: true, message: data?.error?.message || 'API error' });
-    const text = (data.content || []).filter(function(b) { return b.type === 'text'; }).map(function(b) { return b.text; }).join('').replace(/```json|```/g, '').trim();
+    const data = await aiRes.json();
+    if (!aiRes.ok) return res.status(aiRes.status).json({ error: true, message: data.error.message || 'API error' });
+    const blocks = data.content || [];
+    const text = blocks.filter(function(b){ return b.type === 'text'; }).map(function(b){ return b.text; }).join('').replace(/```json|```/g,'').trim();
     const match = text.match(/\{[\s\S]*\}/);
     if (match) {
-      try {
-        const report = JSON.parse(match[0]);
-        await fetch(process.env.SUPABASE_URL + '/rest/v1/reports', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': process.env.SUPABASE_ANON_KEY,
-            'Authorization': 'Bearer ' + process.env.SUPABASE_ANON_KEY,
-            'Prefer': 'return=minimal'
-          },
-          body: JSON.stringify({
-            domain: supplier,
-            company_name: report.company_name || '',
-            overall_score: report.overall_score || 0,
-            verdict: report.verdict || '',
-            full_report: report
-          })
-        });
-      } catch(e) {}
+      const report = JSON.parse(match[0]);
+      const sbUrl = process.env.SUPABASE_URL + '/rest/v1/reports';
+      const sbKey = process.env.SUPABASE_ANON_KEY;
+      await fetch(sbUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': sbKey,
+          'Authorization': 'Bearer ' + sbKey,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({
+          domain: supplier,
+          company_name: report.company_name || '',
+          overall_score: report.overall_score || 0,
+          verdict: report.verdict || '',
+          full_report: report
+        })
+      });
     }
     return res.status(200).json(data);
   } catch (err) {
-    return res.status(500).json({ error: true, message: err.message || 'Internal server error' });
+    return res.status(500).json({ error: true, message: err.message || 'Server error' });
   }
 }
