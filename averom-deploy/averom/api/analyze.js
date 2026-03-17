@@ -1,4 +1,4 @@
-export const config = { runtime: 'edge' };
+export const maxDuration = 60;
 
 const SYSTEM_PROMPT = `You are Averom's AI Supplier Risk Intelligence Engine — a specialized analyst for Amazon sellers evaluating wholesale and B2B suppliers.
 
