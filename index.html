@@ -553,9 +553,7 @@ async function runAnalysis(){
     var res=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({supplier:supplier})});
     var d=await res.json();
     if(!res.ok)throw new Error(d.error&&d.error.message?d.error.message:'API error');
-    var text=(d.content||[]).filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('').replace(/```json|```/g,'').trim();
-    var match=text.match(/\{[\s\S]*\}/);
-    if(!match)throw new Error('No report generated');
+    if(!d||!d.company_name)throw new Error('No report generated');
     stopStatus();
 
     if(!isPro()){
@@ -564,7 +562,7 @@ async function runAnalysis(){
       updateCounter();
     }
 
-    render(JSON.parse(match[0]),supplier);
+    render(d,supplier);
   }catch(err){stopStatus();errEl.textContent='Error: '+err.message;errEl.style.display='block';}
   finally{btn.disabled=false;}
 }
