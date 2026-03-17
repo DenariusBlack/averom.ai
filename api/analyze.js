@@ -109,7 +109,8 @@ export default async function handler(req, res) {
 
     let parsed;
     try {
-      parsed = JSON.parse(text);
+      const cleanText = text.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
+parsed = JSON.parse(cleanText);
     } catch (e) {
       return res.status(500).json({
         error: true,
