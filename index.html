@@ -324,7 +324,7 @@ var statusTimer;
 function startStatus(){var i=0;var el=document.getElementById('statusText');document.getElementById('statusBar').style.display='flex';el.textContent=STATUS[0];statusTimer=setInterval(function(){i=(i+1)%STATUS.length;el.textContent=STATUS[i];},2200);}
 function stopStatus(){clearInterval(statusTimer);document.getElementById('statusBar').style.display='none';}
 function scoreClass(s){return s<=3.5?'c-low':s<=6.5?'c-med':'c-high';}
-function barColor(s){return s>=7?'#5A8A5A':s>=4?'#C9A84C':'#C0665A';}
+function barColor(s){return s<=3?'#5A8A5A':s<=6?'#C9A84C':'#C0665A';}
 function saveReport(report,domain){
   fetch(SB_URL+'/rest/v1/reports',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal'},body:JSON.stringify({domain:domain,company_name:report.company_name||'',overall_score:report.overall_score||0,verdict:report.verdict||'',full_report:report})}).catch(function(){});
 }
