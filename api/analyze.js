@@ -1,18 +1,20 @@
-export const maxDuration = 60;
+export const config = {
+  maxDuration: 60,
+};
 
 const SYSTEM_PROMPT = `You are Averom's AI Supplier Risk Intelligence Engine — a specialized analyst for Amazon sellers evaluating wholesale and B2B suppliers.
 
-Your job is to analyze a supplier's website and generate a structured risk intelligence report. Use your web search capability to gather real data: domain registration, business presence, reviews, complaints, BBB records, social proof, Amazon policy signals, and any fraud indicators.
+Your job is to analyze a supplier's website and generate a structured risk intelligence report based on your knowledge. Assess the supplier using publicly known information about the domain, business reputation patterns, and industry signals.
 
 ANALYSIS METHODOLOGY:
-Search for the following data points before generating the report:
-1. WHOIS / domain age data for the supplier domain
-2. Business name + "reviews" OR "complaints" OR "scam" OR "fraud"
-3. Business name + "BBB" OR "Better Business Bureau"
-4. Business name + "Amazon" OR "authorized distributor"
-5. Physical address verification (Google Maps, LinkedIn, state business registry)
-6. Social media presence and account age
-7. Any news articles, legal filings, or forum discussions
+Consider the following data points when generating the report:
+1. Domain characteristics — is it a well-known domain? Does the name suggest legitimacy or raise concerns?
+2. Business reputation patterns — are there commonly known complaints, scam reports, or fraud indicators associated with this type of supplier?
+3. Amazon compliance signals — is the supplier likely an authorized distributor, or does it show grey market signals?
+4. Review and social proof patterns — what would you expect for a legitimate supplier of this type?
+5. Transparency indicators — does the business name suggest transparency or opacity?
+6. Brand authorization likelihood — can you assess whether they are likely authorized to sell the brands they claim?
+7. Physical presence expectations — what would you expect for a supplier in this category?
 
 SCORING METHODOLOGY:
 Each risk category is scored 0–10 where:
@@ -22,8 +24,8 @@ Each risk category is scored 0–10 where:
 9–10 = Critical risk (strong fraud indicators)
 
 Risk categories and their weight in the overall score:
-- Domain Age Risk (15%): Domain under 1 year = high risk
-- Fraud Scanner Risk (20%): Scam complaints, fraud reports, unresolved disputes
+- Domain Age Risk (15%): Unknown or suspicious domain characteristics = higher risk
+- Fraud Scanner Risk (20%): Known scam complaints, fraud reports, unresolved disputes
 - Amazon Compliance Risk (15%): Not an authorized distributor, grey market signals
 - Review Quality Risk (15%): Fake reviews, no reviews, extreme negative patterns
 - Transparency Risk (20%): Hidden ownership, no physical address, vague about info
@@ -38,103 +40,95 @@ VERDICT LABELS:
 6.0–7.9 = HIGH RISK — Do not proceed without extensive verification
 8.0–10.0 = CRITICAL RISK — Strong fraud indicators, do not engage
 
-OUTPUT FORMAT:
-Respond ONLY with a valid JSON object. No preamble, no markdown, no explanation outside the JSON. Structure:
-
-{
-  "company_name": "string",
-  "website": "string",
-  "address": "string or 'Not publicly disclosed'",
-  "domain_age": "string (e.g. '2 years, 3 months' or 'Registered 2022-04-11')",
-  "business_category": "string",
-  "overall_score": number (0.0–10.0),
-  "verdict": "LOW RISK | MODERATE RISK | HIGH RISK | CRITICAL RISK",
-  "verdict_summary": "2–3 sentence plain-English summary of why this score was assigned",
-  "categories": [
-    { "name": "Domain Age Risk", "score": number, "explanation": "string" },
-    { "name": "Fraud Scanner Risk", "score": number, "explanation": "string" },
-    { "name": "Amazon Compliance Risk", "score": number, "explanation": "string" },
-    { "name": "Review Quality Risk", "score": number, "explanation": "string" },
-    { "name": "Transparency Risk", "score": number, "explanation": "string" },
-    { "name": "Brand Authorization Risk", "score": number, "explanation": "string" },
-    { "name": "Physical Presence Risk", "score": number, "explanation": "string" }
-  ],
-  "red_flags": ["string", "string"],
-  "due_diligence_steps": ["string", "string"],
-  "conclusion": "string (2–4 sentences final assessment and recommendation)",
-  "data_sources_note": "string (brief note on what data was found/not found)"
-}
+Return ONLY valid JSON with these fields: company_name, website, address, domain_age, business_category, overall_score, verdict, verdict_summary, supplier_category, categories (array of 7 risk scores), red_flags, due_diligence_steps, conclusion, safety_protocol, data_sources_note.
 
 IMPORTANT RULES:
-- Never fabricate data. If you cannot find information on a category, state that clearly in the explanation and assign a moderate-to-high score reflecting the lack of transparency.
+- If you don't have specific knowledge about a supplier, state that clearly and assign moderate-to-high scores reflecting the uncertainty.
 - Red flags must be specific and actionable, not generic.
 - Due diligence steps must be practical for an Amazon seller with no legal team.
 - The conclusion must give a clear go/no-go signal with conditions if applicable.
-- If the domain does not appear to be a real supplier or the site does not exist, return a CRITICAL RISK score with appropriate explanation.`;
+- If the domain does not appear to be a real supplier, return a CRITICAL RISK score with appropriate explanation.`;
 
-export default async function handler(req) {
+export default async function handler(req, res) {
+  const requestId = Math.random().toString(36).slice(2, 8);
+  console.log(`[analyze:${requestId}] Request received`, req.method, new Date().toISOString());
+
+  // CORS headers on every response
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
   if (req.method === 'OPTIONS') {
-    return new Response(null, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
-    });
+    return res.status(204).end();
   }
 
   if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const { supplier } = await req.json();
+    const { supplier } = req.body || {};
     if (!supplier) {
-      return new Response(JSON.stringify({ error: 'Supplier domain is required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return res.status(400).json({ error: 'Supplier domain is required' });
     }
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
-      return new Response(JSON.stringify({ error: 'API key not configured' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      console.error(`[analyze:${requestId}] ANTHROPIC_API_KEY not set`);
+      return res.status(500).json({ error: 'API key not configured', details: 'Server misconfiguration' });
     }
 
-    const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-beta': 'interleaved-thinking-2025-05-14',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 4000,
-        system: SYSTEM_PROMPT,
-        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-        messages: [
-          {
-            role: 'user',
-            content: `Analyze this supplier and generate a full risk intelligence report: ${supplier}`,
-          },
-        ],
-      }),
-    });
+    console.log(`[analyze:${requestId}] Calling Anthropic for: ${supplier}`);
+    const startTime = Date.now();
+
+    // 50s safety timeout — abort before Vercel's 60s hard limit
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 50000);
+
+    let anthropicRes;
+    try {
+      anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+        },
+        signal: controller.signal,
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1500,
+          system: SYSTEM_PROMPT,
+          messages: [
+            {
+              role: 'user',
+              content: `Analyze this supplier domain and generate a risk intelligence report as JSON: ${supplier}`,
+            },
+          ],
+        }),
+      });
+    } catch (fetchErr) {
+      clearTimeout(timeout);
+      if (fetchErr.name === 'AbortError') {
+        console.error(`[analyze:${requestId}] Anthropic call aborted after 50s`);
+        return res.status(504).json({
+          error: 'Analysis timed out',
+          details: 'The AI took too long to respond. Please try again.',
+        });
+      }
+      throw fetchErr;
+    }
+
+    clearTimeout(timeout);
+    console.log(`[analyze:${requestId}] Anthropic responded in ${Date.now() - startTime}ms, status: ${anthropicRes.status}`);
 
     const data = await anthropicRes.json();
 
     if (!anthropicRes.ok) {
-      return new Response(JSON.stringify({ error: data.error?.message || 'Anthropic API error' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      console.error(`[analyze:${requestId}] Anthropic error:`, data.error);
+      return res.status(502).json({
+        error: data.error?.message || 'AI service error',
+        details: `Anthropic API returned status ${anthropicRes.status}`,
       });
     }
 
@@ -145,25 +139,31 @@ export default async function handler(req) {
 
     const jsonMatch = textBlocks.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
-      return new Response(JSON.stringify({ error: 'No structured report returned from AI' }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      console.error(`[analyze:${requestId}] No JSON in AI response, got:`, textBlocks.slice(0, 200));
+      return res.status(500).json({
+        error: 'No structured report returned',
+        details: 'The AI response did not contain valid JSON. Please try again.',
       });
     }
 
-    const report = JSON.parse(jsonMatch[0]);
+    let report;
+    try {
+      report = JSON.parse(jsonMatch[0]);
+    } catch (parseErr) {
+      console.error(`[analyze:${requestId}] JSON parse failed:`, parseErr.message);
+      return res.status(500).json({
+        error: 'Failed to parse AI report',
+        details: 'The AI returned malformed JSON. Please try again.',
+      });
+    }
 
-    return new Response(JSON.stringify(report), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-    });
+    console.log(`[analyze:${requestId}] Success, total time: ${Date.now() - startTime}ms`);
+    return res.status(200).json(report);
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    console.error(`[analyze:${requestId}] Unhandled error:`, err.message);
+    return res.status(500).json({
+      error: 'Internal server error',
+      details: err.message,
     });
   }
 }

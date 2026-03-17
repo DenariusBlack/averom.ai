@@ -490,7 +490,16 @@
         body: JSON.stringify({ supplier })
       });
 
-      const data = await res.json();
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        if (text.includes('FUNCTION_INVOCATION_TIMEOUT')) {
+          throw new Error('Analysis timed out. The supplier lookup took too long — please try again.');
+        }
+        throw new Error('Server error — please try again in a moment.');
+      }
 
       if (!res.ok) throw new Error(data.error || 'Analysis failed');
 
