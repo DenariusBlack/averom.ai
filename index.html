@@ -347,7 +347,7 @@
 <div class="stats">
   <div class="stat"><div class="stat-num">30s</div><div class="stat-label">Avg. Report Time</div></div>
   <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Risk Signals Checked</div></div>
-  <div class="stat"><div class="stat-num">$19</div><div class="stat-label">Pro / Month</div></div>
+  <div class="stat"><div class="stat-num">$9</div><div class="stat-label">Starting At</div></div>
 </div>
 
 <div class="report" id="report">
@@ -432,11 +432,12 @@ function isPro(){return localStorage.getItem('av_pro')==='true';}
 function updateCounter(){
   var used=getUsage();
   var remaining=Math.max(0,FREE_LIMIT-used);
+  var counter=document.getElementById('reportCounter');
   if(isPro()){
-    document.getElementById('reportCounter').textContent='Pro — Unlimited';
-    document.getElementById('reportCounter').style.color='var(--gold)';
+    counter.style.display='none';
   } else {
-    document.getElementById('reportCounter').textContent=remaining+' Free Report'+(remaining===1?'':'s')+' Left';
+    counter.style.display='';
+    counter.textContent=remaining+' Free Report'+(remaining===1?'':'s')+' Left';
   }
 }
 
