@@ -109,7 +109,8 @@ export default async function handler(req, res) {
 
     let parsed;
     try {
-      const cleanText = text.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
+const match = text.match(/```json\s*([\s\S]*?)\s*```/) || text.match(/```\s*([\s\S]*?)\s*```/);
+const cleanText = match ? match[1].trim() : text.trim();
 parsed = JSON.parse(cleanText);
     } catch (e) {
       return res.status(500).json({
